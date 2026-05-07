@@ -1,34 +1,6 @@
 {
-  "name": "mumu Java Deployment Environment",
+  "name": "mumu-java-app",
+  "image": "mcr.microsoft.com/devcontainers/java:21",
 
-  // Pre-built image with Java 21 + Git + common tools already inside
-  // No "features" needed — avoids all feature install errors
-  "image": "mcr.microsoft.com/devcontainers/java:21-jdk-bookworm",
-
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "vscjava.vscode-java-pack",
-        "vmware.vscode-spring-boot",
-        "ms-azuretools.vscode-docker",
-        "redhat.vscode-yaml",
-        "humao.rest-client"
-      ],
-      "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash"
-      }
-    }
-  },
-
-  "forwardPorts": [8080, 5432, 9090, 3000],
-  "portsAttributes": {
-    "8080": { "label": "mumu App", "onAutoForward": "openBrowser" },
-    "5432": { "label": "PostgreSQL", "onAutoForward": "silent" },
-    "9090": { "label": "Prometheus", "onAutoForward": "silent" },
-    "3000": { "label": "Dashboard", "onAutoForward": "silent" }
-  },
-
-  "postCreateCommand": "bash .devcontainer/setup.sh",
-
-  "remoteUser": "vscode"
+  "postCreateCommand": "chmod +x .devcontainer/setup.sh && bash .devcontainer/setup.sh"
 }
