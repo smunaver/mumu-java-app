@@ -1,4 +1,3 @@
-
 {
   "name": "mumu Java Deployment Environment",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
@@ -21,7 +20,8 @@
     }
   },
 
-  // Features: Docker-in-Codespaces + SDKMAN-friendly setup
+  // Features: Docker-in-Codespaces + Java
+  // Note: Gradle is NOT installed as a feature — mumu's ./gradlew wrapper handles it
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "version": "latest",
@@ -30,9 +30,6 @@
     "ghcr.io/devcontainers/features/java:1": {
       "version": "23",
       "jdkDistro": "ms"
-    },
-    "ghcr.io/devcontainers/features/gradle:1": {
-      "version": "latest"
     }
   },
 
