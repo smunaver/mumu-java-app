@@ -1,45 +1,26 @@
 {
   "name": "mumu Java Deployment Environment",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
 
-  // Install VS Code extensions automatically
+  // Pre-built image with Java 21 + Git + common tools already inside
+  // No "features" needed — avoids all feature install errors
+  "image": "mcr.microsoft.com/devcontainers/java:21-jdk-bookworm",
+
   "customizations": {
     "vscode": {
       "extensions": [
         "vscjava.vscode-java-pack",
         "vmware.vscode-spring-boot",
         "ms-azuretools.vscode-docker",
-        "ms-vscode-remote.remote-containers",
         "redhat.vscode-yaml",
         "humao.rest-client"
       ],
       "settings": {
-        "java.jdt.ls.java.home": "/usr/lib/jvm/java-23-openjdk-amd64",
         "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
   },
 
-  // Features: Docker-in-Codespaces + Java
-  // Note: Gradle is NOT installed as a feature — mumu's ./gradlew wrapper handles it
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "dockerDashComposeVersion": "v2"
-    },
-    "ghcr.io/devcontainers/features/java:1": {
-      "version": "23",
-      "jdkDistro": "ms"
-    }
-  },
-
-  // Ports to forward so you can access the app in your browser
-  "forwardPorts": [
-    8080,   // Spring Boot app (main gateway)
-    5432,   // PostgreSQL
-    9090,   // Prometheus (if mumu uses it)
-    3000    // Any frontend / Grafana dashboard
-  ],
+  "forwardPorts": [8080, 5432, 9090, 3000],
   "portsAttributes": {
     "8080": { "label": "mumu App", "onAutoForward": "openBrowser" },
     "5432": { "label": "PostgreSQL", "onAutoForward": "silent" },
@@ -47,9 +28,7 @@
     "3000": { "label": "Dashboard", "onAutoForward": "silent" }
   },
 
-  // Runs once after the container is created
   "postCreateCommand": "bash .devcontainer/setup.sh",
 
-  // Run as non-root user
   "remoteUser": "vscode"
 }
