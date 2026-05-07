@@ -27,18 +27,32 @@ else
   echo "⚠️  gradlew not found — make sure you opened the mumu repo in this Codespace"
 fi
 
-# --- 3. Verify Docker ---
+# --- 3. Install Docker ---
+# The base Java image does not include Docker, so we install it here
 echo ""
-echo "✅ Checking Docker..."
+echo "✅ Installing Docker..."
+if ! command -v docker &> /dev/null; then
+  curl -fsSL https://get.docker.com | sudo sh
+  sudo usermod -aG docker vscode
+  sudo service docker start
+  echo "Docker installed"
+else
+  echo "Docker already present"
+  sudo service docker start || true
+fi
 docker --version
 docker compose version
 
-# --- 4. Verify Gradle ---
+# --- 4. Verify Gradle wrapper ---
 echo ""
-echo "✅ Checking Gradle..."
-gradle --version
+echo "✅ Checking Gradle wrapper (./gradlew)..."
+if [ -f "./gradlew" ]; then
+  ./gradlew --version
+else
+  echo "⚠️  gradlew not found yet — clone the mumu repo first"
+fi
 
-# --- 5. Pre-pull PostgreSQL image (saves time on first docker compose up) ---
+# --- 5. Pre-pull PostgreSQL Docker image ---
 echo ""
 echo "✅ Pre-pulling PostgreSQL Docker image..."
 docker pull postgres:latest
